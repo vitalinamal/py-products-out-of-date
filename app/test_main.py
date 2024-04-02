@@ -17,7 +17,7 @@ from app.main import outdated_products
                 },
                 {
                     "name": "chicken",
-                    "expiration_date": date(2022, 2, 5),
+                    "expiration_date": date(2022, 2, 2),
                     "price": 120
                 },
                 {
@@ -28,6 +28,27 @@ from app.main import outdated_products
             ],
             date(2022, 2, 2),
             ["duck"]
+        ),
+        (
+            [
+                {
+                    "name": "salmon",
+                    "expiration_date": date(2022, 5, 10),
+                    "price": 600
+                },
+                {
+                    "name": "apples",
+                    "expiration_date": date(2022, 5, 20),
+                    "price": 120
+                },
+                {
+                    "name": "milk",
+                    "expiration_date": date(2022, 5, 15),
+                    "price": 160
+                }
+            ],
+            date(2022, 5, 10),
+            []
         )
     ]
 )
@@ -36,5 +57,6 @@ def test_outdated_products(
         new_date: object,
         expected_output: list
 ) -> None:
-    with patch("app.main.datetime.date.today", return_value=new_date):
+    with patch("datetime.date") as mock_date:
+        mock_date.today.return_value = new_date
         assert outdated_products(user_input) == expected_output
